@@ -1,0 +1,6 @@
+{
+  "items": [
+    { "id": "FAKEcomment02", "snippet": { "videoId": "FAKEvid0002", "totalReplyCount": 1, "topLevelComment": { "snippet": { "videoId": "FAKEvid0002", "authorDisplayName": "@viewer_one", "textDisplay": "Great devlog!", "textOriginal": "Great devlog!", "publishedAt": "2026-10-26T08:00:00Z", "likeCount": 2 } } } },
+    { "id": "FAKEcomment01", "snippet": { "videoId": "FAKEvid0001", "totalReplyCount": 0, "topLevelComment": { "snippet": { "videoId": "FAKEvid0001", "authorDisplayName": "@viewer_two", "textDisplay": "First", "textOriginal": "First", "publishedAt": "2026-10-11T08:00:00Z", "likeCount": 0 } } } }
+  ]
+}

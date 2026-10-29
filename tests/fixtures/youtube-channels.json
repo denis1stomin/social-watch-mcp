@@ -1,0 +1,9 @@
+{
+  "kind": "youtube#channelListResponse",
+  "items": [ {
+    "kind": "youtube#channel", "id": "UCexampleexampleexample00",
+    "snippet": { "title": "Example User", "customUrl": "@exampleuser", "publishedAt": "2026-10-01T00:00:00Z" },
+    "contentDetails": { "relatedPlaylists": { "uploads": "UUsJ9pTtQdnvnq9nFbZ04mYg" } },
+    "statistics": { "viewCount": "1500", "subscriberCount": "37", "hiddenSubscriberCount": false, "videoCount": "2" }
+  } ]
+}

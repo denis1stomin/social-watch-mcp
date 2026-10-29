@@ -1,0 +1,22 @@
+{
+  "name": "social-watch-mcp",
+  "version": "0.1.0",
+  "description": "Read-only MCP server over the official Threads, itch.io, YouTube and X APIs, plus a stats snapshot CLI",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "social-watch": "app/server.mjs"
+  },
+  "scripts": {
+    "start": "node app/server.mjs",
+    "snapshot": "node app/snapshot.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  }
+}

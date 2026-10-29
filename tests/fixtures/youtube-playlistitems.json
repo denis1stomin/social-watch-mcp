@@ -1,0 +1,6 @@
+{
+  "items": [
+    { "snippet": { "title": "Sample Game devlog #1", "publishedAt": "2026-10-25T15:00:00Z", "resourceId": { "kind": "youtube#video", "videoId": "FAKEvid0002" } }, "contentDetails": { "videoId": "FAKEvid0002", "videoPublishedAt": "2026-10-25T15:00:00Z" } },
+    { "snippet": { "title": "Trailer", "publishedAt": "2026-10-10T15:00:00Z", "resourceId": { "kind": "youtube#video", "videoId": "FAKEvid0001" } }, "contentDetails": { "videoId": "FAKEvid0001", "videoPublishedAt": "2026-10-10T15:00:00Z" } }
+  ]
+}

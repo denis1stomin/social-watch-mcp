@@ -1,0 +1,7 @@
+{
+  "data": [
+    { "id": "2000000000000002", "text": "Sample Game got a new level today.", "timestamp": "2026-10-28T10:00:00+0000", "permalink": "https://www.threads.com/@exampleuser/post/FAKE0002", "media_type": "TEXT_POST", "username": "exampleuser" },
+    { "id": "2000000000000001", "text": "Hello Threads", "timestamp": "2026-10-20T09:00:00+0000", "permalink": "https://www.threads.com/@exampleuser/post/FAKE0001", "media_type": "TEXT_POST", "username": "exampleuser" }
+  ],
+  "paging": { "cursors": { "before": "BEFORE", "after": "AFTER" } }
+}

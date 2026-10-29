@@ -1,0 +1,10 @@
+{
+  "data": [
+    { "name": "views", "period": "lifetime", "values": [ { "value": 321 } ] },
+    { "name": "likes", "period": "lifetime", "values": [ { "value": 12 } ] },
+    { "name": "replies", "period": "lifetime", "values": [ { "value": 3 } ] },
+    { "name": "reposts", "period": "lifetime", "values": [ { "value": 1 } ] },
+    { "name": "quotes", "period": "lifetime", "values": [ { "value": 0 } ] },
+    { "name": "shares", "period": "lifetime", "values": [ { "value": 4 } ] }
+  ]
+}

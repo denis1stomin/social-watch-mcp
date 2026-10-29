@@ -1,0 +1,6 @@
+{
+  "games": [
+    { "id": 111, "title": "Old Prototype", "short_text": "An early test", "url": "https://exampleuser.itch.io/old-prototype", "type": "default", "classification": "game", "published": false, "published_at": null, "created_at": "2026-08-01 10:00:00", "views_count": 10, "downloads_count": 1, "purchases_count": 0, "min_price": 0, "earnings": [] },
+    { "id": 222, "title": "Sample Game", "short_text": "A small puzzle game", "url": "https://exampleuser.itch.io/sample-game", "type": "html", "classification": "game", "published": true, "published_at": "2026-10-20 18:00:00", "created_at": "2026-10-01 10:00:00", "views_count": 2682, "downloads_count": 109, "purchases_count": 4, "min_price": 0, "earnings": [ { "currency": "USD", "amount_formatted": "$12.00", "amount": 1200 } ] }
+  ]
+}

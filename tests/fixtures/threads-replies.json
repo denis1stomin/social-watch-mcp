@@ -1,0 +1,7 @@
+{
+  "data": [
+    { "id": "3000000000000001", "text": "Looks fun, is it free?", "timestamp": "2026-10-28T12:00:00+0000", "permalink": "https://www.threads.com/@some_reader/post/FAKE0101", "username": "some_reader" },
+    { "id": "3000000000000002", "text": "Yes, free in the browser.", "timestamp": "2026-10-28T12:30:00+0000", "permalink": "https://www.threads.com/@exampleuser/post/FAKE0102", "username": "exampleuser" },
+    { "id": "3000000000000003", "text": "An old reply", "timestamp": "2026-09-01T12:00:00+0000", "permalink": "https://www.threads.com/@old_reader/post/FAKE0103", "username": "old_reader" }
+  ]
+}
