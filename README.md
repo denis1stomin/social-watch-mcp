@@ -1,5 +1,11 @@
 # social-watch-mcp
 
+[![CI](https://github.com/denis1stomin/social-watch-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/denis1stomin/social-watch-mcp/actions/workflows/ci.yml)
+[![Security](https://github.com/denis1stomin/social-watch-mcp/actions/workflows/security.yml/badge.svg)](https://github.com/denis1stomin/social-watch-mcp/actions/workflows/security.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Node 22+](https://img.shields.io/badge/node-22%2B-blue.svg)
+[![MCP server](https://img.shields.io/badge/MCP-server-blue.svg)](https://modelcontextprotocol.io)
+
 A small, **read-only** [MCP](https://modelcontextprotocol.io) server that lets Claude see your own Threads, itch.io,
 YouTube and X numbers and replies through the official APIs, instead of you pasting screenshots.
 
