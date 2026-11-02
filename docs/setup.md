@@ -10,7 +10,27 @@ cp .env.example .env     # then replace each <placeholder> you set up; leave the
 ```
 
 A platform whose value is empty or still a `<placeholder>` is reported as "not set up". You can set up one platform
-at a time. Never paste a token into a chat, a task file or a commit; only into `.env`.
+at a time. Never paste a token into a chat, a task file or a commit.
+
+### Where the keys can live
+
+Each key is looked up in this order; the first real value wins:
+
+1. **Environment variables** with the same names (`YOUTUBE_API_KEY=...`), for example from your shell profile, a
+   secret manager, or the `env` block of the MCP config. With `claude mcp add`, pass them as
+   `-e YOUTUBE_API_KEY=...` (note: that stores the value in Claude's config file in plain text).
+2. **`.env`** in the social-watch-mcp folder, as above.
+3. **macOS Keychain** (macOS only): a generic password with service `social-watch-mcp` and the variable name as
+   account. Add or change one with (`-w` at the end makes it ask for the value, so it stays out of shell history):
+
+   ```sh
+   security add-generic-password -U -s social-watch-mcp -a YOUTUBE_API_KEY -w
+   security add-generic-password -U -s social-watch-mcp -a YOUTUBE_CHANNEL_ID -w
+   ```
+
+   Check one: `security find-generic-password -s social-watch-mcp -a YOUTUBE_API_KEY` (prints the entry, not the
+   value). Remove one: `security delete-generic-password -s social-watch-mcp -a YOUTUBE_API_KEY`. With keys in the
+   keychain you don't need a `.env` at all; if you keep one, leave those lines as `<placeholders>` or delete them.
 
 After changing `.env`, restart Claude Code (or run `/mcp` and reconnect social-watch) so the server reads it again.
 Check what is set up with the `accounts` tool, or from the terminal: `npm run snapshot -- --out /tmp/sw-check`.
@@ -98,9 +118,12 @@ Public numbers (subscribers, views, videos, comments) need only an API key, no O
 1. Open https://console.cloud.google.com/ with the Google account you like (it doesn't have to own the channel).
    Create a project, for example `social-watch`.
 2. **APIs & Services > Library**, search **YouTube Data API v3**, click **Enable**.
-3. **APIs & Services > Credentials > Create credentials > API key**.
-4. Click the new key > **API restrictions > Restrict key** > tick only **YouTube Data API v3** > Save.
-   (Optional: Application restrictions > IP addresses, your home IP.)
+3. **APIs & Services > Credentials > Create credentials**. If a wizard asks "Which API are you using?", pick
+   **YouTube Data API v3** and **Public data** (that creates an API key; **User data** would create an OAuth
+   client, which social-watch doesn't use). Otherwise pick **API key** directly.
+4. In the key's settings, **API restrictions**: select only **YouTube Data API v3**. **Application restrictions**:
+   **None** is fine for a key that reads only public data; **IP addresses** works only if your IP never changes.
+   Save. (A "Service account required" note on that page is about Gemini/Agent Platform keys; ignore it.)
 5. Paste it into `.env`: `YOUTUBE_API_KEY=<the key>`. Also set `YOUTUBE_CHANNEL_ID=UC...`: your channel id, shown at https://www.youtube.com/account_advanced
    (YouTube Studio > Settings > Channel > Advanced settings).
 

@@ -38,13 +38,14 @@ cd social-watch-mcp
 npm ci                    # installs the two dependencies from the lockfile
 cp .env.example .env      # then fill in the platforms you want
 chmod 600 .env            # keys are readable by you only
-npm test                  # 24 tests on made-up data: no network, no keys needed
+npm test                  # 27 tests on made-up data: no network, no keys needed
 ```
 
 ### 1. Get your keys
 
 Each platform has its own steps (Meta app, API key, ...), all in [docs/setup.md](docs/setup.md). You can set up one
-platform at a time; the others stay "not set up". Free except X, which is pay-per-use (well under $1 a month at
+platform at a time; the others stay "not set up". Keys can also come from environment variables or,
+on macOS, the Keychain instead of `.env` (see [docs/setup.md](docs/setup.md#where-the-keys-can-live)). Free except X, which is pay-per-use (well under $1 a month at
 weekly checks).
 
 | Platform | Key in `.env` | Cost |

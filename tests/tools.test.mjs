@@ -124,3 +124,13 @@ test('nothing set up at all still answers', async () => {
   assert.ok(r.accounts.every((a) => a.status === 'not set up'));
   assert.equal(calls.length, 0);
 });
+
+test('youtube: a channel without public videos (uploads playlist 404) has no posts, not an error', async () => {
+  const { fetchImpl } = fakeFetch();
+  const noVideos = async (input, init) => (new URL(input).pathname.endsWith('/playlistItems')
+    ? new Response('{"error":{"code":404,"message":"playlistNotFound"}}', { status: 404 }) : fetchImpl(input, init));
+  const watch = createWatch({ env: FAKE_ENV, fetchImpl: noVideos });
+  const r = await watch.recentPosts('youtube');
+  assert.equal(r.status, 'ok');
+  assert.deepEqual(r.posts, []);
+});

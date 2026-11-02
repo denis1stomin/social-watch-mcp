@@ -1,6 +1,6 @@
 // YouTube Data API v3 with an API key (public data only, no OAuth).
 // Docs: https://developers.google.com/youtube/v3/docs ; every call here costs 1 quota unit (10,000/day free).
-import { url } from '../http.mjs';
+import { url, HttpError } from '../http.mjs';
 import { shorten, parseSince, num } from './common.mjs';
 
 const BASE = 'https://www.googleapis.com/youtube/v3';
@@ -37,7 +37,9 @@ export function createYoutube({ key, channelId }, http) {
     async recentPosts(limit = 10) {
       const uploads = (await getChannel()).contentDetails?.relatedPlaylists?.uploads;
       if (!uploads) return [];
-      const r = await get('playlistItems', { part: 'snippet,contentDetails', playlistId: uploads, maxResults: Math.min(limit, 50) });
+      // A channel without public videos has an uploads playlist id, but the playlist answers 404.
+      const r = await get('playlistItems', { part: 'snippet,contentDetails', playlistId: uploads, maxResults: Math.min(limit, 50) })
+        .catch((e) => { if (e instanceof HttpError && e.status === 404) return { items: [] }; throw e; });
       return (r.items ?? []).map((it) => {
         const id = it.contentDetails?.videoId ?? it.snippet?.resourceId?.videoId;
         return {

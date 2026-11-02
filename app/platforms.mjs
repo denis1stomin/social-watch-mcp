@@ -7,20 +7,23 @@ import { createThreads } from './platforms/threads.mjs';
 import { createItch } from './platforms/itch.mjs';
 import { createYoutube } from './platforms/youtube.mjs';
 import { createX } from './platforms/x.mjs';
+import { fillFromKeychain, isMissing } from './keychain.mjs';
 
 export const PLATFORMS = ['threads', 'itch', 'youtube', 'x'];
 export const PROJECT_DIR = fileURLToPath(new URL('..', import.meta.url));
 const X_KEYS = ['X_API_KEY', 'X_API_SECRET', 'X_ACCESS_TOKEN', 'X_ACCESS_TOKEN_SECRET'];
+export const CONFIG_KEYS = ['THREADS_TOKEN', 'ITCH_API_KEY', 'YOUTUBE_API_KEY', 'YOUTUBE_CHANNEL_ID', ...X_KEYS];
 
-// Loads social-watch-mcp/.env into process.env (existing variables win). Tests never call this.
+// Loads social-watch-mcp/.env into process.env (existing variables win), then fills what is still missing from
+// the macOS keychain. Tests never call this.
 export function loadDotEnv(file = `${PROJECT_DIR}.env`) {
   if (existsSync(file)) process.loadEnvFile(file);
-  return process.env;
+  return fillFromKeychain(process.env, CONFIG_KEYS);
 }
 
 export function readConfig(env) {
   // Empty values and untouched <placeholders> from .env.example count as not set up.
-  const v = (k) => { const x = (env[k] ?? '').trim(); return x && !x.startsWith('<') ? x : undefined; };
+  const v = (k) => (isMissing(env[k]) ? undefined : env[k].trim());
   return {
     threads: v('THREADS_TOKEN') && { token: v('THREADS_TOKEN') },
     itch: v('ITCH_API_KEY') && { key: v('ITCH_API_KEY') },
@@ -45,7 +48,7 @@ export function createWatch({ env, fetchImpl } = {}) {
 
   const notSetUp = (platform) => ({
     platform, status: 'not set up',
-    how: `Add its key to social-watch-mcp/.env, see social-watch-mcp/docs/setup.md#${platform}`,
+    how: `Add its key to social-watch-mcp/.env or the macOS keychain, see social-watch-mcp/docs/setup.md#${platform}`,
   });
 
   // Runs fn on the platform's adapter; unknown and unconfigured platforms are answered, not thrown.
