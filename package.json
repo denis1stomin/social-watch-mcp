@@ -1,7 +1,7 @@
 {
   "name": "social-watch-mcp",
   "version": "0.1.0",
-  "description": "Read-only MCP server over the official Threads, itch.io, YouTube and X APIs, plus a stats snapshot CLI",
+  "description": "Read-only MCP server over the official Threads, itch.io, YouTube, X, Bluesky and Facebook Page APIs, plus a stats snapshot CLI",
   "type": "module",
   "private": true,
   "engines": {

@@ -28,7 +28,7 @@ test('every request made by every tool is a GET', async () => {
   const { fetchImpl, calls } = fakeFetch();
   const w = createWatch({ env: FAKE_ENV, fetchImpl });
   await w.accounts();
-  for (const p of ['threads', 'itch', 'youtube', 'x']) {
+  for (const p of ['threads', 'itch', 'youtube', 'x', 'bluesky', 'facebook']) {
     const posts = (await w.recentPosts(p)).posts;
     await w.postStats(p, posts[0].id);
     await w.replies(p);
@@ -56,7 +56,7 @@ test('no write method or write endpoint anywhere in the code', () => {
   for (const f of sources()) {
     const code = readFileSync(f, 'utf8');
     assert.doesNotMatch(code, /['"`](POST|PUT|PATCH|DELETE)['"`]/, `${f} names a write method`);
-    assert.doesNotMatch(code, /threads_publish|media_publish|threads_content_publish|threads_manage_replies|\/(delete|add-game|remove-game|collections|manage_reply|hide|rate)\b|\.insert\b/,
+    assert.doesNotMatch(code, /threads_publish|media_publish|threads_content_publish|threads_manage_replies|com\.atproto\.(repo|server|identity)|createRecord|putRecord|deleteRecord|createSession|pages_manage_\w+|pages_messaging|publish_pages|\/(delete|add-game|remove-game|collections|manage_reply|hide|rate)\b|\.insert\b/,
       `${f} names a write endpoint`);
   }
 });

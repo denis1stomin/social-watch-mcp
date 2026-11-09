@@ -7,7 +7,7 @@
 [![MCP server](https://img.shields.io/badge/MCP-server-blue.svg)](https://modelcontextprotocol.io)
 
 A small, **read-only** [MCP](https://modelcontextprotocol.io) server that lets Claude see your own Threads, itch.io,
-YouTube and X numbers and replies through the official APIs, instead of you pasting screenshots.
+YouTube, X, Bluesky and Facebook Page numbers and replies through the official APIs, instead of you pasting screenshots.
 
 Ask Claude "how did my posts do this week?" or "any replies I should answer?" and it calls the tools below, reads
 the real numbers and answers. It never posts, replies, likes or deletes: the HTTP client refuses everything except
@@ -21,7 +21,7 @@ GET, and tests enforce that (details in [SECURITY.md](SECURITY.md)).
 | `replies(platform, since?)` | replies, comments and mentions to read: text, author, date, link |
 | `totals(platform)` | account-level numbers (followers, total views, downloads...) |
 
-`platform` is one of `threads`, `itch`, `youtube`, `x`. A platform without a key answers `"status": "not set up"`,
+`platform` is one of `threads`, `itch`, `youtube`, `x`, `bluesky`, `facebook`. A platform without a key answers `"status": "not set up"`,
 never an error, so you can start with just one.
 
 There is also a snapshot command that saves the day's numbers to `stats/YYYY-MM-DD.json` (and a short `.md`), so
@@ -54,6 +54,8 @@ weekly checks).
 | itch.io | `ITCH_API_KEY` | free |
 | YouTube | `YOUTUBE_API_KEY` + `YOUTUBE_CHANNEL_ID` | free (quota) |
 | X | four `X_*` values of a separate Read-only app | prepaid credits |
+| Bluesky | `BLUESKY_HANDLE` (just the handle, no key) | free |
+| Facebook Page | `FACEBOOK_PAGE_TOKEN` (a read-only Page token, no expiry) | free |
 
 ### 2. Try it without Claude
 

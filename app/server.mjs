@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// social-watch MCP server (stdio). Five read-only tools over Threads, itch.io, YouTube and X.
+// social-watch MCP server (stdio). Five read-only tools over Threads, itch.io, YouTube, X, Bluesky and a Facebook Page.
 import { pathToFileURL } from 'node:url';
 import { realpathSync } from 'node:fs';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -26,7 +26,7 @@ export function createServer(watch) {
 
   tool('accounts', 'Which platforms are set up, and each profile (name, handle, followers/subscribers where the API gives them).',
     { platform: platform.optional() }, ({ platform: p }) => watch.accounts(p));
-  tool('recent_posts', 'Latest posts (Threads, X), games (itch.io) or videos (YouTube): id, date, shortened text, link. On X every returned post costs credits, so keep limit small.',
+  tool('recent_posts', 'Latest posts (Threads, X, Bluesky, Facebook), games (itch.io) or videos (YouTube): id, date, shortened text, link. On X every returned post costs credits, so keep limit small.',
     { platform, limit: z.number().int().min(1).max(50).default(10) }, ({ platform: p, limit }) => watch.recentPosts(p, limit));
   tool('post_stats', 'Numbers for one post/game/video by id: views, likes, replies, reposts/shares, downloads, as far as the platform gives them.',
     { platform, id: z.string().min(1) }, ({ platform: p, id }) => watch.postStats(p, id));

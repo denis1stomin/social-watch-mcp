@@ -28,8 +28,16 @@ Each key is looked up in this order; the first real value wins:
    security add-generic-password -U -s social-watch-mcp -a YOUTUBE_CHANNEL_ID -w
    ```
 
+   The `-w` prompt silently cuts the input at 128 characters. That is enough for most keys but not for a long token
+   such as `THREADS_TOKEN` (a cut token is rejected, for example by Meta with "Failed to decrypt"). For those, read the
+   value yourself (nothing is echoed or kept in history):
+
+   ```sh
+   read -rs "T?Paste token: "; echo; security add-generic-password -U -s social-watch-mcp -a THREADS_TOKEN -w "$T"; unset T
+   ```
+
    Check one: `security find-generic-password -s social-watch-mcp -a YOUTUBE_API_KEY` (prints the entry, not the
-   value). Remove one: `security delete-generic-password -s social-watch-mcp -a YOUTUBE_API_KEY`. With keys in the
+   value). To check a saved value's length: `security find-generic-password -s social-watch-mcp -a THREADS_TOKEN -w | tr -d '\n' | wc -c`. Remove one: `security delete-generic-password -s social-watch-mcp -a YOUTUBE_API_KEY`. With keys in the
    keychain you don't need a `.env` at all; if you keep one, leave those lines as `<placeholders>` or delete them.
 
 After changing `.env`, restart Claude Code (or run `/mcp` and reconnect social-watch) so the server reads it again.
@@ -41,6 +49,8 @@ Check what is set up with the `accounts` tool, or from the terminal: `npm run sn
 | itch.io | API key | until you revoke it | free |
 | YouTube | Google Cloud API key | until you delete it | free (10,000 quota units/day) |
 | X | a separate X app with Read permission, its 4 OAuth 1.0a keys | until you regenerate them | pay-per-use credits, well under $1/month at weekly checks |
+| Bluesky | nothing: just your handle | - | free |
+| Facebook Page | Meta app + Page access token | no expiry, until the app is removed, you lose the Page role or change your password | free |
 
 ---
 
@@ -177,6 +187,93 @@ Sources: [OAuth 1.0a user tokens](https://docs.x.com/resources/fundamentals/auth
 [Mentions](https://docs.x.com/x-api/posts/user-mention-timeline-by-user-id), [Metrics](https://docs.x.com/x-api/fundamentals/metrics).
 
 ---
+
+<a id="bluesky"></a>
+## Bluesky
+
+Nothing to create: social-watch reads Bluesky through the public API (`public.api.bsky.app`) without logging in,
+so there is no key and no token that could post. Only your handle is needed:
+
+```
+BLUESKY_HANDLE=yourname.bsky.social
+```
+
+(A leading `@` is fine. A handle is public, so it can live in `.env`; the keychain works too.) Never put an app
+password here: social-watch does not need one.
+
+What you get: profile and followers; recent posts (reposts of other people's posts are skipped); likes, replies,
+reposts, quotes and bookmarks per post; replies to your last 10 posts, including answers further down the thread;
+totals (followers, following, posts). Not available without a login: view counts (Bluesky has none) and mentions.
+
+Limits: the public API allows about 3,000 requests per 5 minutes per IP; one `replies` call makes about 12.
+
+Sources: [API directory](https://docs.bsky.app/docs/advanced-guides/api-directory),
+[getProfile](https://docs.bsky.app/docs/api/app-bsky-actor-get-profile),
+[getAuthorFeed](https://docs.bsky.app/docs/api/app-bsky-feed-get-author-feed),
+[getPostThread](https://docs.bsky.app/docs/api/app-bsky-feed-get-post-thread),
+[Rate limits](https://docs.bsky.app/docs/advanced-guides/rate-limits).
+
+---
+
+<a id="facebook"></a>
+## Facebook Page
+
+social-watch reads a Facebook **Page**, not a personal profile: Meta's API gives almost nothing for profiles. If you
+only have a profile, create a Page first (Menu > Pages > Create). An app in development mode is enough for a Page you
+admin, so no app review is needed.
+
+1. Open https://developers.facebook.com/apps and click **Create app**. Name it something like
+   `social-watch-fb-readonly` (a separate app from the Threads one and from any posting bot, so this token can never post).
+   Use case: **Manage everything on your Page** (Meta renames these; pick the one that lists the Page permissions).
+2. In the app, open the use case **Customize > Permissions** and add only:
+   - `pages_show_list` (find your Page)
+   - `pages_read_engagement` (posts, reactions, followers)
+   - `pages_read_user_content` (comments and posts that tag the Page)
+   - `read_insights` (views)
+
+   Do **not** add `pages_manage_posts`, `pages_manage_engagement`, `pages_messaging` or anything else with "manage" in it.
+   The use case itself may list a few more (for example `business_management` or `email`, marked "Required for use
+   case", so they can't be removed). That is fine: a permission on the app's list only says what the app may ask
+   for. What counts is what you tick in step 3, because the token carries only those.
+3. Open the Graph API Explorer (https://developers.facebook.com/tools/explorer), choose your app, click
+   **Generate Access Token**, tick the four permissions above and choose your Page when asked. This gives a short-lived
+   **user** token (about 1 hour).
+4. Turn it into a token that does not expire, in two calls (run them in your own terminal; `<APP_ID>` and
+   `<APP_SECRET>` are on the app's Settings > Basic page):
+
+   ```sh
+   curl -s "https://graph.facebook.com/v25.0/oauth/access_token?grant_type=fb_exchange_token&client_id=<APP_ID>&client_secret=<APP_SECRET>&fb_exchange_token=<SHORT_LIVED_USER_TOKEN>"
+   curl -s "https://graph.facebook.com/v25.0/me/accounts?fields=id,name,access_token&access_token=<LONG_LIVED_USER_TOKEN>"
+   ```
+
+   The first answer's `access_token` is the long-lived user token (60 days); the second lists your Pages, each with its
+   own `access_token`. That **Page token** (starts with `EAA`) has no expiry date: it is the one to keep. Check it in
+   the Access Token Debugger (https://developers.facebook.com/tools/debug/accesstoken): it should say it never
+   expires and list only the four permissions (if it shows any other, regenerate the token without it).
+5. Save it. A Page token is longer than 128 characters, so use the `read` form from
+   [where the keys can live](#where-the-keys-can-live) (the plain `-w` prompt would cut it):
+
+   ```sh
+   read -rs "T?Paste token: "; echo; security add-generic-password -U -s social-watch-mcp -a FACEBOOK_PAGE_TOKEN -w "$T"; unset T
+   ```
+
+   Or in `.env`: `FACEBOOK_PAGE_TOKEN=<the Page token>`. Nothing else is needed: the token tells social-watch which Page.
+
+The token stops working if you lose your role on the Page, change your Facebook password or remove the app; repeat steps
+3-5 then.
+
+What you get: Page name, username, about, followers; recent posts; reactions, comments, shares and views per post;
+comments on your last 10 posts (and replies under them), posts that tag the Page as mentions; totals (followers, Page
+likes, views in the last 28 days). Views come from Meta's `post_media_view` and `page_media_view` insights; if Meta
+refuses them (missing `read_insights`, or a Page too small to have insights) they show as `null` and everything else still
+answers. A comment's author name only comes back with `pages_read_user_content`.
+
+Sources: [Pages API](https://developers.facebook.com/docs/pages-api),
+[Page access tokens](https://developers.facebook.com/docs/facebook-login/guides/access-tokens/get-long-lived),
+[Deprecated Page insights metrics](https://developers.facebook.com/documentation/pages-api/platforminsights/page/deprecated-metrics).
+
+---
+
 
 ## TikTok
 

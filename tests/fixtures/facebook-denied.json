@@ -1,0 +1,1 @@
+{ "error": { "message": "(#10) This endpoint requires the 'pages_read_user_content' permission", "type": "OAuthException", "code": 10 } }

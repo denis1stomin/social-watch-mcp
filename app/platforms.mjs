@@ -7,12 +7,14 @@ import { createThreads } from './platforms/threads.mjs';
 import { createItch } from './platforms/itch.mjs';
 import { createYoutube } from './platforms/youtube.mjs';
 import { createX } from './platforms/x.mjs';
+import { createBluesky } from './platforms/bluesky.mjs';
+import { createFacebook } from './platforms/facebook.mjs';
 import { fillFromKeychain, isMissing } from './keychain.mjs';
 
-export const PLATFORMS = ['threads', 'itch', 'youtube', 'x'];
+export const PLATFORMS = ['threads', 'itch', 'youtube', 'x', 'bluesky', 'facebook'];
 export const PROJECT_DIR = fileURLToPath(new URL('..', import.meta.url));
 const X_KEYS = ['X_API_KEY', 'X_API_SECRET', 'X_ACCESS_TOKEN', 'X_ACCESS_TOKEN_SECRET'];
-export const CONFIG_KEYS = ['THREADS_TOKEN', 'ITCH_API_KEY', 'YOUTUBE_API_KEY', 'YOUTUBE_CHANNEL_ID', ...X_KEYS];
+export const CONFIG_KEYS = ['THREADS_TOKEN', 'ITCH_API_KEY', 'YOUTUBE_API_KEY', 'YOUTUBE_CHANNEL_ID', ...X_KEYS, 'BLUESKY_HANDLE', 'FACEBOOK_PAGE_TOKEN'];
 
 // Loads social-watch-mcp/.env into process.env (existing variables win), then fills what is still missing from
 // the macOS keychain. Tests never call this.
@@ -32,6 +34,10 @@ export function readConfig(env) {
     x: X_KEYS.every((k) => v(k)) && {
       key: v('X_API_KEY'), secret: v('X_API_SECRET'), token: v('X_ACCESS_TOKEN'), tokenSecret: v('X_ACCESS_TOKEN_SECRET'),
     },
+    // Bluesky needs no key: the public API only takes the handle, which is not a secret.
+    bluesky: v('BLUESKY_HANDLE') && { handle: v('BLUESKY_HANDLE') },
+    // A Page access token; /me tells the Page id, so the token is the only setting.
+    facebook: v('FACEBOOK_PAGE_TOKEN') && { token: v('FACEBOOK_PAGE_TOKEN') },
   };
 }
 
@@ -43,12 +49,12 @@ export function secretsOf(config) {
 export function createWatch({ env, fetchImpl } = {}) {
   const config = readConfig(env);
   const http = createHttp({ fetchImpl, secrets: secretsOf(config) });
-  const makers = { threads: createThreads, itch: createItch, youtube: createYoutube, x: createX };
+  const makers = { threads: createThreads, itch: createItch, youtube: createYoutube, x: createX, bluesky: createBluesky, facebook: createFacebook };
   const adapters = Object.fromEntries(PLATFORMS.filter((p) => config[p]).map((p) => [p, makers[p](config[p], http)]));
 
   const notSetUp = (platform) => ({
     platform, status: 'not set up',
-    how: `Add its key to social-watch-mcp/.env or the macOS keychain, see social-watch-mcp/docs/setup.md#${platform}`,
+    how: `Add its key (or handle) to social-watch-mcp/.env or the macOS keychain, see social-watch-mcp/docs/setup.md#${platform}`,
   });
 
   // Runs fn on the platform's adapter; unknown and unconfigured platforms are answered, not thrown.

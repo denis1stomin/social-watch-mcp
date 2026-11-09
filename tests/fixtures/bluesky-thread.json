@@ -1,0 +1,53 @@
+{ "thread": {
+  "$type": "app.bsky.feed.defs#threadViewPost",
+  "post": {
+  "uri": "at://did:plc:exampleexampleexample/app.bsky.feed.post/3fakepost0002",
+  "cid": "bafyfakecid3fakepost0002",
+  "author": { "did": "did:plc:exampleexampleexample", "handle": "exampleuser.bsky.social", "displayName": "" },
+  "record": { "$type": "app.bsky.feed.post", "text": "Sample Game: the new level art is done.", "createdAt": "2026-10-28T18:05:00.000Z" },
+  "replyCount": 3, "repostCount": 2, "likeCount": 9, "quoteCount": 1, "bookmarkCount": 1,
+  "indexedAt": "2026-10-28T18:05:00.000Z",
+  "labels": []
+},
+  "replies": [
+    { "$type": "app.bsky.feed.defs#threadViewPost", "post": {
+  "uri": "at://did:plc:somereaderexample000000/app.bsky.feed.post/3fakereply001",
+  "cid": "bafyfakecid3fakereply001",
+  "author": { "did": "did:plc:somereaderexample000000", "handle": "some_reader.bsky.social", "displayName": "" },
+  "record": { "$type": "app.bsky.feed.post", "text": "Looks great, when is the release?", "createdAt": "2026-10-29T08:00:00.000Z" },
+  "replyCount": 1, "repostCount": 0, "likeCount": 1, "quoteCount": 0, "bookmarkCount": 0,
+  "indexedAt": "2026-10-29T08:00:00.000Z",
+  "labels": []
+}, "replies": [
+      { "$type": "app.bsky.feed.defs#threadViewPost", "post": {
+  "uri": "at://did:plc:exampleexampleexample/app.bsky.feed.post/3fakereply002",
+  "cid": "bafyfakecid3fakereply002",
+  "author": { "did": "did:plc:exampleexampleexample", "handle": "exampleuser.bsky.social", "displayName": "" },
+  "record": { "$type": "app.bsky.feed.post", "text": "Thanks! Next month.", "createdAt": "2026-10-29T09:00:00.000Z" },
+  "replyCount": 1, "repostCount": 0, "likeCount": 1, "quoteCount": 0, "bookmarkCount": 0,
+  "indexedAt": "2026-10-29T09:00:00.000Z",
+  "labels": []
+}, "replies": [
+        { "$type": "app.bsky.feed.defs#threadViewPost", "post": {
+  "uri": "at://did:plc:somereaderexample000000/app.bsky.feed.post/3fakereply003",
+  "cid": "bafyfakecid3fakereply003",
+  "author": { "did": "did:plc:somereaderexample000000", "handle": "some_reader.bsky.social", "displayName": "" },
+  "record": { "$type": "app.bsky.feed.post", "text": "Can't wait.", "createdAt": "2026-10-29T10:00:00.000Z" },
+  "replyCount": 0, "repostCount": 0, "likeCount": 0, "quoteCount": 0, "bookmarkCount": 0,
+  "indexedAt": "2026-10-29T10:00:00.000Z",
+  "labels": []
+}, "replies": [] }
+      ] }
+    ] },
+    { "$type": "app.bsky.feed.defs#blockedPost", "uri": "at://did:plc:blockedexample000000000/app.bsky.feed.post/3fakeblocked1", "blocked": true },
+    { "$type": "app.bsky.feed.defs#threadViewPost", "post": {
+  "uri": "at://did:plc:oldreaderexample0000000/app.bsky.feed.post/3fakereply004",
+  "cid": "bafyfakecid3fakereply004",
+  "author": { "did": "did:plc:oldreaderexample0000000", "handle": "old_reader.bsky.social", "displayName": "" },
+  "record": { "$type": "app.bsky.feed.post", "text": "Nice colors", "createdAt": "2026-09-30T08:00:00.000Z" },
+  "replyCount": 0, "repostCount": 0, "likeCount": 0, "quoteCount": 0, "bookmarkCount": 0,
+  "indexedAt": "2026-09-30T08:00:00.000Z",
+  "labels": []
+}, "replies": [] }
+  ]
+} }

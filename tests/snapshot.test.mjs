@@ -23,13 +23,15 @@ test('default output is ./stats', () => {
 test('collects every platform with post numbers', async () => {
   const { s } = await snap();
   assert.equal(s.date, '2026-10-29');
-  assert.deepEqual(Object.keys(s.platforms), ['threads', 'itch', 'youtube', 'x']);
+  assert.deepEqual(Object.keys(s.platforms), ['threads', 'itch', 'youtube', 'x', 'bluesky', 'facebook']);
   assert.equal(s.platforms.threads.profile.followers, 42);
   assert.equal(s.platforms.threads.posts[0].stats.views, 321);
   assert.equal(s.platforms.itch.posts[0].stats.downloads, 109);
   assert.equal(s.platforms.youtube.totals.subscribers, 37);
   assert.equal(s.platforms.x.totals.followers, 58);
   assert.equal(s.platforms.x.posts[0].stats.views, 512);
+  assert.equal(s.platforms.bluesky.posts[0].stats.likes, 9);
+  assert.equal(s.platforms.facebook.posts[0].stats.views, 264);
 });
 
 test('writes JSON + Markdown and never overwrites a day', async () => {

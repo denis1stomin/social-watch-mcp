@@ -1,0 +1,9 @@
+{ "posts": [ {
+  "uri": "at://did:plc:exampleexampleexample/app.bsky.feed.post/3fakepost0002",
+  "cid": "bafyfakecid3fakepost0002",
+  "author": { "did": "did:plc:exampleexampleexample", "handle": "exampleuser.bsky.social", "displayName": "" },
+  "record": { "$type": "app.bsky.feed.post", "text": "Sample Game: the new level art is done.", "createdAt": "2026-10-28T18:05:00.000Z" },
+  "replyCount": 3, "repostCount": 2, "likeCount": 9, "quoteCount": 1, "bookmarkCount": 1,
+  "indexedAt": "2026-10-28T18:05:00.000Z",
+  "labels": []
+} ] }

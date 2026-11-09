@@ -10,7 +10,8 @@ Please don't open a public issue for a security problem. Use GitHub's private vu
 - **Read-only by construction.** All network access goes through `app/http.mjs`, which refuses every method except
   GET. Tests check that no other source file can reach the network and that no write endpoint is named anywhere.
 - **Read-only credentials where the platform allows it.** The setup guide has you create a separate X app with Read
-  permission and a Threads token with read scopes only, so the platform itself refuses writes.
+  permission and a Threads token and a Facebook Page token with read scopes only, so the platform itself refuses writes. Bluesky uses no
+  login at all: only the public API and your handle (never an app password).
 - **Secrets stay local.** Keys come only from environment variables, a local `.env` (git-ignored) or, on macOS, the login Keychain. Errors and logs
   go through a redactor, and the snapshot command refuses to write a file that contains anything token-like.
 - **No telemetry, no server.** The MCP server talks to Claude over stdio and to the official platform APIs; nothing

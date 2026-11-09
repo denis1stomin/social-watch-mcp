@@ -13,7 +13,14 @@ export const FAKE_ENV = {
   X_API_SECRET: 'fake-x-api-secret-for-tests',
   X_ACCESS_TOKEN: 'fake-x-access-token-for-tests',
   X_ACCESS_TOKEN_SECRET: 'fake-x-access-secret-for-tests',
+  BLUESKY_HANDLE: '@exampleuser.bsky.social',
+  FACEBOOK_PAGE_TOKEN: 'fake-facebook-page-token-for-tests',
 };
+
+const FB_PAGE = '4000000000000001';
+const FB_POST2 = `${FB_PAGE}_5000000000000002`;
+const BSKY_DID = 'did:plc:exampleexampleexample';
+const BSKY_POST2 = `at://${BSKY_DID}/app.bsky.feed.post/3fakepost0002`;
 
 function route(u, headers) {
   const p = u.pathname;
@@ -53,6 +60,27 @@ function route(u, headers) {
     }
     if (p === '/2/tweets/1900000000000000002') return [200, fixture('x-tweet')];
     if (p.startsWith('/2/tweets/')) return [200, '{"errors":[{"title":"Not Found Error"}]}'];
+  }
+  if (u.host === 'public.api.bsky.app') {
+    if (headers.Authorization) return [400, '{"error":"the public API takes no login"}'];
+    const q = (k) => u.searchParams.get(k);
+    if (p === '/xrpc/app.bsky.actor.getProfile' && q('actor') === 'exampleuser.bsky.social') return [200, fixture('bluesky-profile')];
+    if (p === '/xrpc/app.bsky.feed.getAuthorFeed' && q('actor') === BSKY_DID) return [200, fixture('bluesky-feed')];
+    if (p === '/xrpc/app.bsky.feed.getPosts') return [200, q('uris') === BSKY_POST2 ? fixture('bluesky-posts') : '{"posts":[]}'];
+    if (p === '/xrpc/app.bsky.feed.getPostThread')
+      return [200, q('uri') === BSKY_POST2 ? fixture('bluesky-thread') : `{"thread":{"post":{"uri":"${q('uri')}"},"replies":[]}}`];
+  }
+  if (u.host === 'graph.facebook.com') {
+    if (u.searchParams.get('access_token') !== FAKE_ENV.FACEBOOK_PAGE_TOKEN) return [400, '{"error":{"message":"Invalid OAuth access token","code":190}}'];
+    if (p === '/v25.0/me') return [200, fixture('facebook-page')];
+    if (p === `/v25.0/${FB_PAGE}/posts`) return [200, fixture('facebook-posts')];
+    if (p === `/v25.0/${FB_PAGE}/insights`) return [200, fixture('facebook-page-insights')];
+    if (p === `/v25.0/${FB_PAGE}/tagged`) return [200, fixture('facebook-tagged')];
+    if (p === `/v25.0/${FB_POST2}/insights`) return [200, fixture('facebook-post-insights')];
+    if (p === `/v25.0/${FB_POST2}/comments`) return [200, fixture('facebook-comments')];
+    if (p.endsWith('/comments')) return [200, '{"data":[]}'];
+    if (p === `/v25.0/${FB_POST2}`) return [200, fixture('facebook-post')];
+    if (p.startsWith('/v25.0/')) return [400, '{"error":{"message":"Unsupported get request","code":100}}'];
   }
   return [404, '{"error":"no fixture"}'];
 }

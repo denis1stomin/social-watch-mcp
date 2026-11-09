@@ -1,0 +1,29 @@
+{ "feed": [
+  { "post": {
+  "uri": "at://did:plc:exampleexampleexample/app.bsky.feed.post/3fakepost0002",
+  "cid": "bafyfakecid3fakepost0002",
+  "author": { "did": "did:plc:exampleexampleexample", "handle": "exampleuser.bsky.social", "displayName": "" },
+  "record": { "$type": "app.bsky.feed.post", "text": "Sample Game: the new level art is done.", "createdAt": "2026-10-28T18:05:00.000Z" },
+  "replyCount": 3, "repostCount": 2, "likeCount": 9, "quoteCount": 1, "bookmarkCount": 1,
+  "indexedAt": "2026-10-28T18:05:00.000Z",
+  "labels": []
+} },
+  { "post": {
+  "uri": "at://did:plc:someoneelseexample00000/app.bsky.feed.post/3fakeother001",
+  "cid": "bafyfakecid3fakeother001",
+  "author": { "did": "did:plc:someoneelseexample00000", "handle": "someone.bsky.social", "displayName": "" },
+  "record": { "$type": "app.bsky.feed.post", "text": "A post by someone else", "createdAt": "2026-10-27T12:00:00.000Z" },
+  "replyCount": 5, "repostCount": 10, "likeCount": 100, "quoteCount": 0, "bookmarkCount": 2,
+  "indexedAt": "2026-10-27T12:00:00.000Z",
+  "labels": []
+}, "reason": { "$type": "app.bsky.feed.defs#reasonRepost", "by": { "did": "did:plc:exampleexampleexample", "handle": "exampleuser.bsky.social" }, "indexedAt": "2026-10-27T13:00:00.000Z" } },
+  { "post": {
+  "uri": "at://did:plc:exampleexampleexample/app.bsky.feed.post/3fakepost0001",
+  "cid": "bafyfakecid3fakepost0001",
+  "author": { "did": "did:plc:exampleexampleexample", "handle": "exampleuser.bsky.social", "displayName": "" },
+  "record": { "$type": "app.bsky.feed.post", "text": "", "createdAt": "2026-10-20T09:00:00.000Z" },
+  "replyCount": 0, "repostCount": 0, "likeCount": 4, "quoteCount": 0, "bookmarkCount": 0,
+  "indexedAt": "2026-10-20T09:00:00.000Z",
+  "labels": []
+} }
+] }
